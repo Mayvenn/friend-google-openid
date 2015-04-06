@@ -1,4 +1,4 @@
-(defproject friend-google-openid "0.1.0"
+(defproject friend-google-openid "0.2.0-SNAPSHOT"
   :description "Friend workflow for Google OpenID Connect"
   :url "http://github.com/Mayvenn/friend-google-openid"
   :license {:name "Eclipse Public License"

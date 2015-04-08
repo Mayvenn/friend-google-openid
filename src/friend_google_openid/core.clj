@@ -27,15 +27,14 @@
                               :grant_type "authorization_code"
                               :redirect_uri (format-config-uri config)}}})
 
-(defn authenticate [routes config]
+(defn workflow [config]
   "Authenticates the routes with Google OpenID Connect.
 
-  Config consists of :client-id, :client-secret, and these:
-  :callback      - {:path "" :domain ""}
+  Config consists of :client-id, :client-secret, and:
+  :callback      - {:path \"\" :domain \"\"}
   :credential-fn - (fn [] )}"
-  (friend/authenticate routes {:allow-anon? true
-                               :workflows [(oauth2/workflow
-                                            {:client-config config
-                                             :uri-config (uri-config config)
-                                             :credential-fn (config :credential-fn)
-                                             :access-token-parsefn parse-jwt})]}))
+  (oauth2/workflow
+   {:client-config config
+    :uri-config (uri-config config)
+    :credential-fn (config :credential-fn)
+    :access-token-parsefn parse-jwt}))

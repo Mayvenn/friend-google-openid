@@ -3,14 +3,16 @@
             [friend-oauth2.workflow :as oauth2]
             [friend-oauth2.util :refer [format-config-uri]]
             [cheshire.core :refer [parse-string]])
-  (:import [com.google.api.client.googleapis.auth.oauth2 GoogleIdToken]
-           [com.google.api.client.json.jackson2 JacksonFactory]))
+  (:import [com.google.api.client.googleapis.auth.oauth2 GoogleIdToken GoogleIdTokenVerifier]
+           [com.google.api.client.json.jackson2 JacksonFactory]
+           [com.google.api.client.http.apache ApacheHttpTransport]))
 
 (defn parse-jwt [{body :body}]
   (let [encrypted-id ((parse-string body) "id_token")
-        token-payload (.getPayload (GoogleIdToken/parse (JacksonFactory/getDefaultInstance) encrypted-id))]
-    (if (.getEmailVerified token-payload)
-      {:email (.getEmail token-payload)}
+        verifier (GoogleIdTokenVerifier. (ApacheHttpTransport.) (JacksonFactory/getDefaultInstance))
+        token (.verify verifier encrypted-id)]
+    (if (and token (-> token .getPayload .getEmailVerified))
+      {:email (-> token .getPayload .getEmail)}
       {})))
 
 (defn uri-config

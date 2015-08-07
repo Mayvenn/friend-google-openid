@@ -3,11 +3,6 @@
   :url "http://github.com/Mayvenn/friend-google-openid"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-
-
-
-
-
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [com.cemerick/friend "0.2.1"]
                  [friend-oauth2 "0.1.3"]
